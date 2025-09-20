@@ -1,14 +1,16 @@
 package com.codqueto.ftkiss.services;
 
-import com.codqueto.ftkiss.entities.User;
+import com.codqueto.ftkiss.persistance.entities.User;
+import com.codqueto.ftkiss.persistance.repositories.IUserRepository;
 import com.codqueto.ftkiss.web.dtos.request.CreateUserRequest;
 import com.codqueto.ftkiss.web.dtos.request.UpdateUserRequest;
 import com.codqueto.ftkiss.web.dtos.response.CreateUserResponse;
 import com.codqueto.ftkiss.web.dtos.response.GetUserResponse;
 import com.codqueto.ftkiss.web.dtos.response.UpdateUserResponse;
-import com.codqueto.ftkiss.web.exceptions.UserNotFound;
+import com.codqueto.ftkiss.web.exceptions.UserNotFoundException;
 import com.codqueto.ftkiss.web.mappers.UserMapper;
 import jakarta.annotation.PostConstruct;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
@@ -19,74 +21,44 @@ import java.util.Map;
 @Service
 public class UserService {
 
-    private final Map<Long, User> users;
+    private final IUserRepository repository;
 
-    public UserService() {
-        this.users = new HashMap<>();
-    }
-
-    @PostConstruct
-    private void init() {
-        User user1 = new User();
-        user1.setUserId(1L);
-        user1.setName("Hiram");
-        user1.setEmail("hirammendez000@gmail.com");
-        user1.setPassword("adminadmin");
-        user1.setBirthdate(LocalDate.of(2003,5,7));
-
-        User user2 = new User();
-        user2.setUserId(2L);
-        user2.setName("Mara");
-        user2.setEmail("mararobles04@gmail.com");
-        user2.setPassword("adminadmin");
-        user2.setBirthdate(LocalDate.of(2002,4,2));
-
-        this.users.put(1L,user1);
-        this.users.put(2L,user2);
+    @Autowired
+    public UserService(IUserRepository repository) {
+        this.repository = repository;
     }
 
     public List<GetUserResponse> list() {
-        return this.users.values()
+        return this.repository.findAll()
                 .stream()
                 .map(UserMapper::toGetUserResponse)
                 .toList();
     }
 
-    public GetUserResponse get(Long id) {
-        User user = this.users.get(id);
-
-        if(user == null) {
-            throw new UserNotFound("User with id: " + id + " not found");
-        }
+    public GetUserResponse get(Integer id) {
+        User user = this.repository.findById(id)
+                .orElseThrow(() -> new UserNotFoundException("User with id: " + id + " not found"));
 
         return UserMapper.toGetUserResponse(user);
     }
 
     public CreateUserResponse create(CreateUserRequest createUserRequest) {
         User user = UserMapper.map(createUserRequest);
-        this.users.put(user.getUserId(), user);
-
-        return UserMapper.toCreateUserResponse(user);
+        return UserMapper.toCreateUserResponse(this.repository.save(user));
     }
 
-    public UpdateUserResponse update(UpdateUserRequest updateUserRequest, Long id) {
-        User user = this.users.get(id);
+    public UpdateUserResponse update(UpdateUserRequest updateUserRequest, Integer id) {
+        User user = this.repository.findById(id)
+                .orElseThrow(() -> new UserNotFoundException("User with id: " + id + " not found"));
 
-        if(user == null) {
-            throw new UserNotFound("User with id: " + id + " not found");
-        }
-
-        UserMapper.map(updateUserRequest, user);
-        return UserMapper.toUpdateUserResponse(user);
+        User userSaved = this.repository.save(UserMapper.map(updateUserRequest, user));
+        return UserMapper.toUpdateUserResponse(userSaved);
     }
 
-    public void delete(Long id) {
-        User user = this.users.get(id);
+    public void delete(Integer id) {
+        User user = this.repository.findById(id)
+                .orElseThrow(() -> new UserNotFoundException("User with id: " + id + " not found"));
 
-        if(user == null) {
-            throw new UserNotFound("User with id: " + id + " not found");
-        }
-
-        this.users.remove(id);
+        this.repository.delete(user);
     }
 }

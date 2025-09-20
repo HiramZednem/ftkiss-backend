@@ -1,13 +1,11 @@
 package com.codqueto.ftkiss.web.controllers;
 
-import com.codqueto.ftkiss.entities.User;
 import com.codqueto.ftkiss.services.UserService;
 import com.codqueto.ftkiss.web.dtos.request.CreateUserRequest;
 import com.codqueto.ftkiss.web.dtos.request.UpdateUserRequest;
 import com.codqueto.ftkiss.web.dtos.response.CreateUserResponse;
 import com.codqueto.ftkiss.web.dtos.response.GetUserResponse;
 import com.codqueto.ftkiss.web.dtos.response.UpdateUserResponse;
-import com.codqueto.ftkiss.web.mappers.UserMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -20,14 +18,9 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 @RestController
 @RequestMapping("user")
@@ -46,7 +39,7 @@ public class UserController {
     }
 
     @GetMapping("{id}")
-    public ResponseEntity<GetUserResponse> get(@PathVariable("id") Long id) {
+    public ResponseEntity<GetUserResponse> get(@PathVariable("id") Integer id) {
         return new ResponseEntity<>(this.userService.get(id), HttpStatus.OK);
     }
 
@@ -56,12 +49,12 @@ public class UserController {
     }
 
     @PutMapping("{id}")
-    public ResponseEntity<UpdateUserResponse> update(@RequestBody @Validated UpdateUserRequest updateUserRequest, @PathVariable("id") Long id) {
+    public ResponseEntity<UpdateUserResponse> update(@RequestBody @Validated UpdateUserRequest updateUserRequest, @PathVariable("id") Integer id) {
         return new ResponseEntity<>(this.userService.update(updateUserRequest, id), HttpStatus.OK);
     }
 
     @DeleteMapping("{id}")
-    public ResponseEntity<Void> delete(@PathVariable("id") Long id) {
+    public ResponseEntity<Void> delete(@PathVariable("id") Integer id) {
         this.userService.delete(id);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }

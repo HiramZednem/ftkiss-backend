@@ -11,7 +11,7 @@ import java.time.LocalDate;
 @Getter
 @JsonNaming(PropertyNamingStrategies.SnakeCaseStrategy.class)
 public class CreateUserResponse {
-    private Long userId;
+    private Integer userId;
     private String name;
     private String email;
     private LocalDate birthdate;
