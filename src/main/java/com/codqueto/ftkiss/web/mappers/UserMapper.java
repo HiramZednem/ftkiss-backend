@@ -2,6 +2,7 @@ package com.codqueto.ftkiss.web.mappers;
 
 import com.codqueto.ftkiss.entities.User;
 import com.codqueto.ftkiss.web.dtos.request.CreateUserRequest;
+import com.codqueto.ftkiss.web.dtos.request.UpdateUserRequest;
 import com.codqueto.ftkiss.web.dtos.response.CreateUserResponse;
 import com.codqueto.ftkiss.web.dtos.response.GetUserResponse;
 import com.codqueto.ftkiss.web.dtos.response.UpdateUserResponse;
@@ -9,17 +10,25 @@ import com.codqueto.ftkiss.web.dtos.response.UpdateUserResponse;
 import java.util.Random;
 
 public class UserMapper {
-    public static User map(CreateUserRequest userRequest, User user) {
-        if (user == null) {
-            user = new User();
-            Random random = new Random();
-            Long id = random.nextLong();
+    public static User map(CreateUserRequest userRequest) {
+        User user = new User();
+        Random random = new Random();
+        Long id = random.nextLong();
 
-            if (id<0) {
-                id = id*-1;
-            }
-            user.setUserId(id);
+        if (id<0) {
+            id = id*-1;
         }
+        user.setUserId(id);
+
+        user.setName(userRequest.getName());
+        user.setEmail(userRequest.getEmail());
+        user.setPassword(userRequest.getPassword());
+        user.setBirthdate(userRequest.getBirthdate());
+
+        return user;
+    }
+
+    public static User map(UpdateUserRequest userRequest, User user) {
 
         user.setName(userRequest.getName());
         user.setEmail(userRequest.getEmail());

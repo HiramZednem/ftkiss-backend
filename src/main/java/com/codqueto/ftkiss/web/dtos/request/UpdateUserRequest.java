@@ -12,8 +12,9 @@ import java.time.LocalDate;
 
 @Getter
 @Setter
-public class CreateUserRequest {
-    @NotNull @NotBlank
+public class UpdateUserRequest {
+    @NotNull
+    @NotBlank
     private String name;
 
     @NotNull @NotBlank @Email
