@@ -6,6 +6,7 @@ import com.codqueto.ftkiss.web.dtos.request.UpdateUserRequest;
 import com.codqueto.ftkiss.web.dtos.response.CreateUserResponse;
 import com.codqueto.ftkiss.web.dtos.response.GetUserResponse;
 import com.codqueto.ftkiss.web.dtos.response.UpdateUserResponse;
+import com.codqueto.ftkiss.web.exceptions.UserNotFound;
 import com.codqueto.ftkiss.web.mappers.UserMapper;
 import jakarta.annotation.PostConstruct;
 import org.springframework.stereotype.Service;
@@ -55,7 +56,7 @@ public class UserService {
         User user = this.users.get(id);
 
         if(user == null) {
-            // TODO: throw error;
+            throw new UserNotFound("User with id: " + id + " not found");
         }
 
         return UserMapper.toGetUserResponse(user);
@@ -72,7 +73,7 @@ public class UserService {
         User user = this.users.get(id);
 
         if(user == null) {
-            // TODO: throw error;
+            throw new UserNotFound("User with id: " + id + " not found");
         }
 
         UserMapper.map(updateUserRequest, user);
@@ -80,6 +81,12 @@ public class UserService {
     }
 
     public void delete(Long id) {
+        User user = this.users.get(id);
+
+        if(user == null) {
+            throw new UserNotFound("User with id: " + id + " not found");
+        }
+
         this.users.remove(id);
     }
 }

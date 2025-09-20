@@ -42,22 +42,22 @@ public class UserController {
 
     @GetMapping
     public ResponseEntity<List<GetUserResponse>> list() {
-        return new ResponseEntity(this.userService.list(), HttpStatus.OK);
+        return new ResponseEntity<>(this.userService.list(), HttpStatus.OK);
     }
 
     @GetMapping("{id}")
     public ResponseEntity<GetUserResponse> get(@PathVariable("id") Long id) {
-        return new ResponseEntity(this.userService.get(id), HttpStatus.OK);
+        return new ResponseEntity<>(this.userService.get(id), HttpStatus.OK);
     }
 
     @PostMapping()
     public ResponseEntity<CreateUserResponse> create(@RequestBody @Validated CreateUserRequest createUserRequest) {
-        return new ResponseEntity(this.userService.create(createUserRequest), HttpStatus.CREATED);
+        return new ResponseEntity<>(this.userService.create(createUserRequest), HttpStatus.CREATED);
     }
 
     @PutMapping("{id}")
     public ResponseEntity<UpdateUserResponse> update(@RequestBody @Validated UpdateUserRequest updateUserRequest, @PathVariable("id") Long id) {
-        return new ResponseEntity(this.userService.update(updateUserRequest, id), HttpStatus.OK);
+        return new ResponseEntity<>(this.userService.update(updateUserRequest, id), HttpStatus.OK);
     }
 
     @DeleteMapping("{id}")
