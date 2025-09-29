@@ -1,6 +1,6 @@
 package com.codqueto.ftkiss.web.controllers;
 
-import com.codqueto.ftkiss.services.UserService;
+import com.codqueto.ftkiss.services.impl.UserServiceImpl;
 import com.codqueto.ftkiss.web.dtos.request.user.CreateUserRequest;
 import com.codqueto.ftkiss.web.dtos.request.user.UpdateUserRequest;
 import com.codqueto.ftkiss.web.dtos.response.user.CreateUserResponse;
@@ -26,10 +26,10 @@ import java.util.List;
 @RequestMapping("user")
 public class UserController {
 
-    private final UserService userService;
+    private final UserServiceImpl userService;
 
     @Autowired
-    public UserController(UserService userService) {
+    public UserController(UserServiceImpl userService) {
         this.userService = userService;
     }
 
@@ -39,7 +39,7 @@ public class UserController {
     }
 
     @GetMapping("{id}")
-    public ResponseEntity<GetUserResponse> get(@PathVariable("id") Integer id) {
+    public ResponseEntity<GetUserResponse> get(@PathVariable("id") Long id) {
         return new ResponseEntity<>(this.userService.get(id), HttpStatus.OK);
     }
 
@@ -49,12 +49,12 @@ public class UserController {
     }
 
     @PutMapping("{id}")
-    public ResponseEntity<UpdateUserResponse> update(@RequestBody @Validated UpdateUserRequest updateUserRequest, @PathVariable("id") Integer id) {
+    public ResponseEntity<UpdateUserResponse> update(@RequestBody @Validated UpdateUserRequest updateUserRequest, @PathVariable("id") Long id) {
         return new ResponseEntity<>(this.userService.update(updateUserRequest, id), HttpStatus.OK);
     }
 
     @DeleteMapping("{id}")
-    public ResponseEntity<Void> delete(@PathVariable("id") Integer id) {
+    public ResponseEntity<Void> delete(@PathVariable("id") Long id) {
         this.userService.delete(id);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }

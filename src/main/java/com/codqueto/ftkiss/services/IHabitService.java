@@ -10,11 +10,11 @@ import com.codqueto.ftkiss.web.dtos.response.habit.UpdateHabitResponse;
 import java.util.List;
 
 public interface IHabitService {
-    List<GetHabitResponse> list();
+    List<GetHabitResponse> list(Long userId);
 
     GetHabitResponse get(Long id);
 
-    CreateHabitResponse create(CreateHabitRequest habitRequest);
+    CreateHabitResponse create(CreateHabitRequest habitRequest, Long userId);
 
     UpdateHabitResponse update(UpdateHabitRequest updateHabitRequest, Long id);
 

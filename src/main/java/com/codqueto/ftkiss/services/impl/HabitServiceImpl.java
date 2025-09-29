@@ -1,8 +1,10 @@
 package com.codqueto.ftkiss.services.impl;
 
 import com.codqueto.ftkiss.persistance.entities.Habit;
+import com.codqueto.ftkiss.persistance.entities.User;
 import com.codqueto.ftkiss.persistance.repositories.IHabitRespository;
 import com.codqueto.ftkiss.services.IHabitService;
+import com.codqueto.ftkiss.services.IUserService;
 import com.codqueto.ftkiss.web.dtos.request.habit.CreateHabitRequest;
 import com.codqueto.ftkiss.web.dtos.request.habit.UpdateHabitRequest;
 import com.codqueto.ftkiss.web.dtos.response.habit.CreateHabitResponse;
@@ -17,15 +19,19 @@ import java.util.List;
 
 @Service
 public class HabitServiceImpl implements IHabitService {
+
     private final IHabitRespository repository;
+    private final IUserService userService;
 
     @Autowired
-    public HabitServiceImpl(IHabitRespository repository) {
+    public HabitServiceImpl(IHabitRespository repository, IUserService userService) {
         this.repository = repository;
+        this.userService = userService;
     }
 
     @Override
-    public List<GetHabitResponse> list() {
+    public List<GetHabitResponse> list(Long userId) {
+        // TODO: ask Conejo...
         return repository.findAll()
                 .stream()
                 .map(HabitMapper::toGetHabitResponse)
@@ -40,12 +46,16 @@ public class HabitServiceImpl implements IHabitService {
     }
 
     @Override
-    public CreateHabitResponse create(CreateHabitRequest habitRequest) {
-        // TODO: preguntar a conejo
+    public CreateHabitResponse create(CreateHabitRequest habitRequest, Long userId) {
         Habit habit = HabitMapper.map(habitRequest);
 
-//        habit.set
-        return null;
+        User user = userService.getUserById(userId);
+        habit.setUser(user);
+
+        Habit createdHabit = repository.save(habit);
+
+        habit.setId(createdHabit.getId());
+        return HabitMapper.toCreateHabitResponse(habit);
     }
 
     @Override

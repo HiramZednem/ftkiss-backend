@@ -21,7 +21,7 @@ public class User {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id;
+    private Long id;
 
     @Column(nullable = false)
     private String name;
@@ -35,6 +35,4 @@ public class User {
     @Column(name = "dob", nullable = false)
     private LocalDate birthdate;
 
-    @OneToMany(mappedBy = "user")
-    private List<Habit> habits;
 }

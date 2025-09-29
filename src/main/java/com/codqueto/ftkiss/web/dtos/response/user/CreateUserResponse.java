@@ -7,11 +7,11 @@ import lombok.Setter;
 
 import java.time.LocalDate;
 
-@Setter
 @Getter
+@Setter
 @JsonNaming(PropertyNamingStrategies.SnakeCaseStrategy.class)
 public class CreateUserResponse {
-    private Integer userId;
+    private Long userId;
     private String name;
     private String email;
     private LocalDate birthdate;
