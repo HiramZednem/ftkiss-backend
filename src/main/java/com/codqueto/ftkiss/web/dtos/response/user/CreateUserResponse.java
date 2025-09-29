@@ -1,4 +1,4 @@
-package com.codqueto.ftkiss.web.dtos.response;
+package com.codqueto.ftkiss.web.dtos.response.user;
 
 import com.fasterxml.jackson.databind.PropertyNamingStrategies;
 import com.fasterxml.jackson.databind.annotation.JsonNaming;
@@ -10,7 +10,7 @@ import java.time.LocalDate;
 @Setter
 @Getter
 @JsonNaming(PropertyNamingStrategies.SnakeCaseStrategy.class)
-public class GetUserResponse {
+public class CreateUserResponse {
     private Integer userId;
     private String name;
     private String email;

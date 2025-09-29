@@ -1,4 +1,4 @@
-package com.codqueto.ftkiss.web.dtos.request;
+package com.codqueto.ftkiss.web.dtos.request.user;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.validation.constraints.Email;

@@ -1,11 +1,11 @@
 package com.codqueto.ftkiss.web.mappers;
 
 import com.codqueto.ftkiss.persistance.entities.User;
-import com.codqueto.ftkiss.web.dtos.request.CreateUserRequest;
-import com.codqueto.ftkiss.web.dtos.request.UpdateUserRequest;
-import com.codqueto.ftkiss.web.dtos.response.CreateUserResponse;
-import com.codqueto.ftkiss.web.dtos.response.GetUserResponse;
-import com.codqueto.ftkiss.web.dtos.response.UpdateUserResponse;
+import com.codqueto.ftkiss.web.dtos.request.user.CreateUserRequest;
+import com.codqueto.ftkiss.web.dtos.request.user.UpdateUserRequest;
+import com.codqueto.ftkiss.web.dtos.response.user.CreateUserResponse;
+import com.codqueto.ftkiss.web.dtos.response.user.GetUserResponse;
+import com.codqueto.ftkiss.web.dtos.response.user.UpdateUserResponse;
 
 
 public class UserMapper {
