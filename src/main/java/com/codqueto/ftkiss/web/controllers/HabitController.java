@@ -17,13 +17,12 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
 @RestController
-@RequestMapping("user")
+@RequestMapping("habit")
 public class HabitController {
 
     private final IHabitService habitService;
@@ -32,27 +31,23 @@ public class HabitController {
     public HabitController(IHabitService habitService) {
         this.habitService = habitService;
     }
-    @GetMapping("{userId}/habit")
-    public ResponseEntity<List<GetHabitResponse>> list(@PathVariable Long userId) {
-        return new ResponseEntity<>( this.habitService.list(userId), HttpStatus.OK);
-    }
 
-    @GetMapping("habit/{habitId}")
+    @GetMapping("{habitId}")
     public ResponseEntity<GetHabitResponse> get(@PathVariable Long habitId) {
         return new ResponseEntity<GetHabitResponse> (this.habitService.get(habitId), HttpStatus.OK);
     }
 
-    @PostMapping("{userId}/habit")
-    public ResponseEntity<CreateHabitResponse> create(@RequestBody @Validated CreateHabitRequest createHabitRequest, @PathVariable Long userId) {
-        return new ResponseEntity<CreateHabitResponse>(this.habitService.create(createHabitRequest, userId), HttpStatus.CREATED);
-    }
-
-    @PutMapping("habit/{habitId}")
+    @PutMapping("{habitId}")
     public ResponseEntity<UpdateHabitResponse> update(@RequestBody @Validated UpdateHabitRequest updateHabitRequest, @PathVariable Long habitId) {
         return new ResponseEntity<>(this.habitService.update(updateHabitRequest, habitId), HttpStatus.OK);
     }
 
-    @DeleteMapping("habit/{habitId}")
+    @PostMapping()
+    public ResponseEntity<CreateHabitResponse> create(@RequestBody @Validated CreateHabitRequest createHabitRequest) {
+        return new ResponseEntity<CreateHabitResponse>(this.habitService.create(createHabitRequest), HttpStatus.CREATED);
+    }
+
+    @DeleteMapping("{habitId}")
     public ResponseEntity<Void> delete(@PathVariable Long habitId) {
         this.habitService.delete(habitId);
         return  new ResponseEntity<>(HttpStatus.NO_CONTENT);

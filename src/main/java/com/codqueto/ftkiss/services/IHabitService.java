@@ -14,7 +14,7 @@ public interface IHabitService {
 
     GetHabitResponse get(Long id);
 
-    CreateHabitResponse create(CreateHabitRequest habitRequest, Long userId);
+    CreateHabitResponse create(CreateHabitRequest habitRequest);
 
     UpdateHabitResponse update(UpdateHabitRequest updateHabitRequest, Long id);
 

@@ -2,6 +2,7 @@ package com.codqueto.ftkiss.services.impl;
 
 import com.codqueto.ftkiss.persistance.entities.Habit;
 import com.codqueto.ftkiss.persistance.repositories.IHabitRespository;
+import com.codqueto.ftkiss.web.dtos.request.habit.CreateHabitRequest;
 import com.codqueto.ftkiss.web.dtos.response.habit.GetHabitResponse;
 import com.codqueto.ftkiss.web.dtos.response.user.GetUserResponse;
 import com.codqueto.ftkiss.web.exceptions.HabitNotFoundException;
@@ -66,4 +67,12 @@ class HabitServiceImplTest {
         assertThrows(HabitNotFoundException.class, () -> habitService.get(id));
     }
 
+    @Test
+    public void givenValidHabitRequest_whenCreateHabit_thenCreateHabitResponse() {
+        CreateHabitRequest createHabitRequest = new CreateHabitRequest();
+        createHabitRequest.setName("do unit test");
+        createHabitRequest.setDescription("a simple description");
+
+
+    }
 }

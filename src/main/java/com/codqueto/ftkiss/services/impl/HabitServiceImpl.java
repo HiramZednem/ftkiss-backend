@@ -51,10 +51,10 @@ public class HabitServiceImpl implements IHabitService {
     }
 
     @Override
-    public CreateHabitResponse create(CreateHabitRequest habitRequest, Long userId) {
+    public CreateHabitResponse create(CreateHabitRequest habitRequest) {
         Habit habit = HabitMapper.map(habitRequest);
 
-        User user = userService.getUserById(userId);
+        User user = userService.getUserById(habitRequest.getUserId());
         habit.setUser(user);
 
         Habit createdHabit = repository.save(habit);
@@ -65,6 +65,9 @@ public class HabitServiceImpl implements IHabitService {
 
     @Override
     public UpdateHabitResponse update(UpdateHabitRequest updateHabitRequest, Long habitId) {
+        if(habitId < 0) {
+            throw new IllegalArgumentException("The id should be greater than 0");
+        }
 
         Habit habit = repository.findById(habitId)
                 .orElseThrow( () -> new HabitNotFoundException("Habit with id: " + habitId + " not found"));
@@ -76,6 +79,10 @@ public class HabitServiceImpl implements IHabitService {
 
     @Override
     public void delete(Long habitId) {
+        if(habitId < 0) {
+            throw new IllegalArgumentException("The id should be greater than 0");
+        }
+
         Habit habit = repository.findById(habitId)
                 .orElseThrow( () -> new HabitNotFoundException("Habit with id: " + habitId + " not found"));
 

@@ -1,8 +1,10 @@
 package com.codqueto.ftkiss.web.controllers;
 
-import com.codqueto.ftkiss.services.impl.UserServiceImpl;
+import com.codqueto.ftkiss.services.IHabitService;
+import com.codqueto.ftkiss.services.IUserService;
 import com.codqueto.ftkiss.web.dtos.request.user.CreateUserRequest;
 import com.codqueto.ftkiss.web.dtos.request.user.UpdateUserRequest;
+import com.codqueto.ftkiss.web.dtos.response.habit.GetHabitResponse;
 import com.codqueto.ftkiss.web.dtos.response.user.CreateUserResponse;
 import com.codqueto.ftkiss.web.dtos.response.user.GetUserResponse;
 import com.codqueto.ftkiss.web.dtos.response.user.UpdateUserResponse;
@@ -26,11 +28,14 @@ import java.util.List;
 @RequestMapping("user")
 public class UserController {
 
-    private final UserServiceImpl userService;
+    private final IUserService userService;
+    private final IHabitService habitService;
 
     @Autowired
-    public UserController(UserServiceImpl userService) {
+    public UserController(IUserService userService,
+                          IHabitService habitService) {
         this.userService = userService;
+        this.habitService = habitService;
     }
 
     @GetMapping
@@ -59,9 +64,15 @@ public class UserController {
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
+    @Deprecated
     @PatchMapping()
     public String updateSpecific() {
         return "update specific";
+    }
+
+    @GetMapping("{userId}/habit")
+    public ResponseEntity<List<GetHabitResponse>> list(@PathVariable Long userId) {
+        return new ResponseEntity<>( this.habitService.list(userId), HttpStatus.OK);
     }
 
 }
