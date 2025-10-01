@@ -16,5 +16,5 @@ public class UpdateHabitRequest {
     private String description;
 
     @NotNull
-    private String hidden;
+    private Boolean hidden;
 }

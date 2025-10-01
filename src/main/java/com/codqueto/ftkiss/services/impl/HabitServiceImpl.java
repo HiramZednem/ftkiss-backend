@@ -31,8 +31,9 @@ public class HabitServiceImpl implements IHabitService {
 
     @Override
     public List<GetHabitResponse> list(Long userId) {
-        // TODO: ask Conejo...
-        return repository.findAll()
+        User user = this.userService.getUserById(userId);
+
+        return repository.getHabitsByUserId(user.getId())
                 .stream()
                 .map(HabitMapper::toGetHabitResponse)
                 .toList();
@@ -40,6 +41,10 @@ public class HabitServiceImpl implements IHabitService {
 
     @Override
     public GetHabitResponse get(Long id) {
+        if(id < 0) {
+            throw new IllegalArgumentException("The id should be greater than 0");
+        }
+
         Habit habit = repository.findById(id)
                 .orElseThrow(() -> new HabitNotFoundException("Habit with id: " + id + " not found"));
         return HabitMapper.toGetHabitResponse(habit);
@@ -59,12 +64,21 @@ public class HabitServiceImpl implements IHabitService {
     }
 
     @Override
-    public UpdateHabitResponse update(UpdateHabitRequest updateHabitRequest, Long id) {
-        return null;
+    public UpdateHabitResponse update(UpdateHabitRequest updateHabitRequest, Long habitId) {
+
+        Habit habit = repository.findById(habitId)
+                .orElseThrow( () -> new HabitNotFoundException("Habit with id: " + habitId + " not found"));
+
+        Habit habitSaved = this.repository.save(HabitMapper.map(updateHabitRequest, habit));
+
+        return HabitMapper.toUpdateHabitResponse(habitSaved);
     }
 
     @Override
-    public void delete(Long id) {
+    public void delete(Long habitId) {
+        Habit habit = repository.findById(habitId)
+                .orElseThrow( () -> new HabitNotFoundException("Habit with id: " + habitId + " not found"));
 
+        this.repository.delete(habit);
     }
 }
