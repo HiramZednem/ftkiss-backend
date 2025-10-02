@@ -65,7 +65,7 @@ public class HabitServiceImpl implements IHabitService {
 
     @Override
     public UpdateHabitResponse update(UpdateHabitRequest updateHabitRequest, Long habitId) {
-        if(habitId < 0) {
+        if(habitId <= 0) {
             throw new IllegalArgumentException("The id should be greater than 0");
         }
 
@@ -79,7 +79,7 @@ public class HabitServiceImpl implements IHabitService {
 
     @Override
     public void delete(Long habitId) {
-        if(habitId < 0) {
+        if(habitId <= 0) {
             throw new IllegalArgumentException("The id should be greater than 0");
         }
 
